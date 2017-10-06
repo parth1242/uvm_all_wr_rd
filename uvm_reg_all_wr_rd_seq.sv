@@ -88,10 +88,15 @@ class uvm_reg_single_all_wr_rd_seq extends uvm_reg_sequence #(uvm_sequence #(uvm
         // end
       end
    endtask: body
-
-   task all_wr_pattern(uvm_reg_map     map);
+   
+   // Pass Pat from config	
+   task all_wr_pattern(uvm_reg_map  map);
        uvm_status_e status;
-       uvm_reg_data_t val = '1;     
+       bit pat=0;
+       uvm_reg_data_t val = '1;  
+	   
+       if(pat == 1) 
+	    val = $urandom;	   
        rg.write(status, val, UVM_FRONTDOOR, map, this); 
    endtask
    
