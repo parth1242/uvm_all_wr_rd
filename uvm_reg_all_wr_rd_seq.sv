@@ -104,7 +104,7 @@ class uvm_reg_single_all_wr_rd_seq extends uvm_reg_sequence #(uvm_sequence #(uvm
        if (val !== exp) begin
             //`uvm_error("uvm_reg_all_wr_rd_seq", $sformatf("Writing a %b in bit #%0d of register \"%s\" with initial value 'h%h yielded 'h%h instead of 'h%h",
               //                          bit_val, k, rg.get_full_name(), v, val, exp));
-             $display("Compare Error !!");  
+	       `uvm_error("uvm_reg_all_wr_rd_seq",$sformatf("Data Mismatch !! Expected %h Actual %h",exp,val));  
         end
    endtask
 
