@@ -29,7 +29,7 @@ class uvm_reg_single_all_wr_rd_seq extends uvm_reg_sequence #(uvm_sequence #(uvm
       if (uvm_resource_db#(bit)::get_by_name({"REG::",rg.get_full_name()},
                                              "NO_REG_TESTS", 0) != null ||
           uvm_resource_db#(bit)::get_by_name({"REG::",rg.get_full_name()},
-                                             "NO_REG_BIT_BASH_TEST", 0) != null )
+                                             "NO_REG_ALL_WR_RD_TEST", 0) != null )
             return;
       
       n_bits = rg.get_n_bytes() * 8;
@@ -184,7 +184,7 @@ class uvm_reg_all_wr_rd_seq extends uvm_reg_sequence #(uvm_sequence #(uvm_reg_it
       if (uvm_resource_db#(bit)::get_by_name({"REG::",blk.get_full_name()},
                                              "NO_REG_TESTS", 0) != null ||
           uvm_resource_db#(bit)::get_by_name({"REG::",blk.get_full_name()},
-                                             "NO_REG_BIT_BASH_TEST", 0) != null )
+                                             "NO_REG_ALL_WR_RD_TEST", 0) != null )
          return;
 
       // Iterate over all registers, checking accesses
@@ -194,7 +194,7 @@ class uvm_reg_all_wr_rd_seq extends uvm_reg_sequence #(uvm_sequence #(uvm_reg_it
          if (uvm_resource_db#(bit)::get_by_name({"REG::",regs[i].get_full_name()},
                                                 "NO_REG_TESTS", 0) != null ||
 	     uvm_resource_db#(bit)::get_by_name({"REG::",regs[i].get_full_name()},
-                                                "NO_REG_BIT_BASH_TEST", 0) != null )
+                                                "NO_REG_ALL_WR_RD_TEST", 0) != null )
             continue;
          
          reg_seq.rg = regs[i];
@@ -207,7 +207,7 @@ class uvm_reg_all_wr_rd_seq extends uvm_reg_sequence #(uvm_sequence #(uvm_reg_it
          if (uvm_resource_db#(bit)::get_by_name({"REG::",regs[i].get_full_name()},
                                                 "NO_REG_TESTS", 0) != null ||
 	     uvm_resource_db#(bit)::get_by_name({"REG::",regs[i].get_full_name()},
-                                                "NO_REG_BIT_BASH_TEST", 0) != null )
+                                                "NO_REG_ALL_WR_RD_TEST", 0) != null )
             continue;
          
          reg_seq.rg = regs[i];
