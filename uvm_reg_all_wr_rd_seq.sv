@@ -4,6 +4,7 @@ class uvm_reg_single_all_wr_rd_seq extends uvm_reg_sequence #(uvm_sequence #(uvm
    // The register to be tested
    uvm_reg rg;
    bit wr_rd;
+   bit  pat=0;
 
    `uvm_object_utils(uvm_reg_single_all_wr_rd_seq)
 
@@ -81,7 +82,7 @@ class uvm_reg_single_all_wr_rd_seq extends uvm_reg_sequence #(uvm_sequence #(uvm
             // Cannot test unpredictable bit behavior
           //  if (dc_mask[k]) continue;
             if(wr_rd == 0)    
-                all_wr_pattern(maps[j]); 
+		    all_wr_pattern(maps[j] , pat); 
             else
                all_rd_pattern(maps[j] , dc_mask);
          // bash_kth_bit(rg, k, mode[k], maps[j], dc_mask);
@@ -90,7 +91,7 @@ class uvm_reg_single_all_wr_rd_seq extends uvm_reg_sequence #(uvm_sequence #(uvm
    endtask: body
    
    // Pass Pat from config	
-   task all_wr_pattern(uvm_reg_map  map);
+	task all_wr_pattern(uvm_reg_map  map,bit  pat);
        uvm_status_e status;
        bit pat=0;
        uvm_reg_data_t val = '1;  
@@ -203,6 +204,7 @@ class uvm_reg_all_wr_rd_seq extends uvm_reg_sequence #(uvm_sequence #(uvm_reg_it
             continue;
          
          reg_seq.rg = regs[i];
+	  reg_seq.pat = 0; 
          reg_seq.wr_rd = 0;   
          reg_seq.start(null,this);
       end
@@ -220,6 +222,34 @@ class uvm_reg_all_wr_rd_seq extends uvm_reg_sequence #(uvm_sequence #(uvm_reg_it
          reg_seq.start(null,this);
       end        
 
+    foreach (regs[i]) begin
+         // Registers with some attributes are not to be tested
+         if (uvm_resource_db#(bit)::get_by_name({"REG::",regs[i].get_full_name()},
+                                                "NO_REG_TESTS", 0) != null ||
+	     uvm_resource_db#(bit)::get_by_name({"REG::",regs[i].get_full_name()},
+                                                "NO_REG_ALL_WR_RD_TEST", 0) != null )
+            continue;
+         
+         reg_seq.rg = regs[i];
+	  reg_seq.pat = 1; 
+         reg_seq.wr_rd = 0;   
+         reg_seq.start(null,this);
+      end
+
+      foreach (regs[i]) begin
+         // Registers with some attributes are not to be tested
+         if (uvm_resource_db#(bit)::get_by_name({"REG::",regs[i].get_full_name()},
+                                                "NO_REG_TESTS", 0) != null ||
+	     uvm_resource_db#(bit)::get_by_name({"REG::",regs[i].get_full_name()},
+                                                "NO_REG_ALL_WR_RD_TEST", 0) != null )
+            continue;
+         
+         reg_seq.rg = regs[i];
+         reg_seq.wr_rd = 1;   
+         reg_seq.start(null,this);
+      end       	   
+	   
+	   
       begin
          uvm_reg_block blks[$];
          
